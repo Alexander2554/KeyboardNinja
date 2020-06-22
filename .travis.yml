@@ -1,0 +1,7 @@
+language: C++
+
+dist: xenial
+
+script:
+  - sudo apt-get install libsfml-dev
+  - git ls-files src/ | xargs clang-format -i && git diff --exit-code
