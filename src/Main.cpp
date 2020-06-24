@@ -2,7 +2,6 @@
 int main(int argc, char const* argv[])
 {
     Menu menu;
-    menu.loadTexture();
-    menu.drawMainMenu();
+    menu.allDraw();
     return 0;
 }
