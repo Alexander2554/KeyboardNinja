@@ -10,6 +10,7 @@ private:
 public:
     Exercise()
     {
+        Clear();
         LoadFromTxt();
     }
     void letterSet(char ch)
@@ -49,7 +50,7 @@ public:
     void RandomLetter()
     {
         srand(time(0));
-        char temp = (rand() % 90) + 32;
+        char temp = (rand() % 90) + 33;
         letterSet(temp);
     }
     void RandomSentence()
