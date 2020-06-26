@@ -6,4 +6,5 @@
 #include <iostream>
 sf::RenderWindow window(sf::VideoMode(1000, 750), "KeybordNinja");
 sf::Font font;
+bool answer = true;
 #endif
