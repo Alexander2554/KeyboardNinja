@@ -1,4 +1,3 @@
-#include "Exercise.cpp"
 #include "Menu.cpp"
 int main(int argc, char const* argv[])
 {
