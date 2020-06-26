@@ -1,5 +1,6 @@
 #include "Menu.hpp"
 #include "Button.cpp"
+#include "Exercise.cpp"
 class Menu {
 private:
     int currentButton;
@@ -279,22 +280,81 @@ public:
         window.draw(textNMGet());
         window.display();
     }
+
+    void timerCount(sf::Sprite fon)
+    {
+        int count = 3;
+        while (window.isOpen()) {
+            sf::Event event;
+            while (window.pollEvent(event)) {
+                if (event.type == sf::Event::Closed) {
+                    window.close();
+                    return;
+                }
+            }
+            if (count == 0)
+                textIMSet(450, 200, "START");
+            else
+                textIMSet(500, 200, std::to_string(count));
+            window.clear();
+            window.draw(fon);
+            window.draw(textNMGet());
+            window.draw(textIMGet());
+            window.display();
+            if (count < 0)
+                return;
+            count--;
+            timer(1000);
+        }
+    }
     void drawLEMenu()
     {
+        bool answer = true;
         sf::Sprite fon(backgroundFon);
         fon.setPosition(0, 0);
         textNMSet(400, 10, "LETTER EXERCISE");
-        sf::Event event;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-            currentMenuSet(0);
+        Exercise exercise;
+        while (window.isOpen()) {
+            if (answer)
+                timerCount(fon);
+            exercise.RandomLetter();
+            char tempc[] = {exercise.letterGet()};
+            std::string temp(tempc);
+            textIMSet(450, 200, "Press " + temp);
+            sf::Event event;
+            window.clear();
+            window.draw(fon);
+            window.draw(textNMGet());
+            window.draw(textIMGet());
+            window.display();
+            timer(3000);
+            while (window.pollEvent(event)) {
+                if (event.type == sf::Event::Closed) {
+                    window.close();
+                    return;
+                }
+                if (event.type == sf::Event::TextEntered) {
+                    if (event.text.unicode < 123 && event.text.unicode > 31) {
+                        if (exercise.CheckAnswer(
+                                    exercise.sentenceGet(),
+                                    static_cast<char>(event.text.unicode))) {
+                            textIMSet(400, 200, "CORRECT");
+
+                        } else
+                            textIMSet(400, 200, "UNCORRECT");
+                    }
+                    if (event.text.unicode == 27) {
+                        currentMenuSet(0);
+                        return;
+                    }
+                }
+            }
+            window.clear();
+            window.draw(fon);
+            window.draw(textNMGet());
+            window.draw(textIMGet());
+            window.display();
+            timer(1000);
         }
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
-        window.clear();
-        window.draw(fon);
-        window.draw(textNMGet());
-        window.display();
     }
 };
