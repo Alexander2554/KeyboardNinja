@@ -4,29 +4,29 @@ class Menu {
 private:
     int currentButton;
     int currentMenu;
+    sf::Text textInMenu;
+    sf::Text nameMenu;
     sf::Texture backgroundMenuFon;
     sf::Texture backgroundFon;
     sf::Int32 ftime = 0;
     void eventUpDown(sf::Event event)
     {
-        if (currentMenu == 0) {
-            int i = currentButtonGet();
-            if (i < 1)
-                i = 6;
-            if (i > 6)
-                i = 1;
-            if (event.type == sf::Event::KeyPressed)
-                if (event.key.code == sf::Keyboard::Up) {
-                    i--;
-                    timer(200);
-                }
-            if (event.type == sf::Event::KeyPressed)
-                if (event.key.code == sf::Keyboard::Down) {
-                    i++;
-                    timer(200);
-                }
-            currentButtonSet(i);
-        }
+        int i = currentButtonGet();
+        if (i < 1)
+            i = 7;
+        if (i > 7)
+            i = 1;
+        if (event.type == sf::Event::KeyPressed)
+            if (event.key.code == sf::Keyboard::Up) {
+                i--;
+                timer(200);
+            }
+        if (event.type == sf::Event::KeyPressed)
+            if (event.key.code == sf::Keyboard::Down) {
+                i++;
+                timer(200);
+            }
+        currentButtonSet(i);
     }
     void timer(sf::Int32 x)
     {
@@ -44,12 +44,21 @@ private:
         return true;
     }
 
+    bool loadFont()
+    {
+        font.loadFromFile("thirdparty/font/sansation.ttf");
+        return true;
+    }
+
 public:
     Menu(int a = 1)
     {
         currentButton = a;
         currentMenu = 0;
         loadTexture();
+        loadFont();
+        textInMenu.setFont(font);
+        nameMenu.setFont(font);
     }
     void currentButtonSet(int a)
     {
@@ -67,11 +76,33 @@ public:
     {
         return currentMenu;
     }
+    void textIMSet(int x, int y, std::string str)
+    {
+        textInMenu.setPosition(x, y);
+        textInMenu.setString(str);
+        textInMenu.setFillColor(sf::Color::White);
+    }
+    sf::Text textIMGet()
+    {
+        return textInMenu;
+    }
+    void textNMSet(int x, int y, std::string str)
+    {
+        nameMenu.setPosition(x, y);
+        nameMenu.setString(str);
+        nameMenu.setFillColor(sf::Color::White);
+    }
+    sf::Text textNMGet()
+    {
+        return nameMenu;
+    }
     void allDraw()
     {
         while (window.isOpen()) {
             if (currentMenu == 0)
                 drawMainMenu();
+            if (currentMenu == 6)
+                drawInsMenu();
             if (currentMenu == 5)
                 drawDevMenu();
             if (currentMenu == 4)
@@ -89,17 +120,23 @@ public:
         sf::Sprite fon(backgroundFon);
         sf::Sprite menuFon(backgroundMenuFon);
         menuFon.setPosition(0, 0);
+        textNMSet(450, 10, "MENU");
         Button button1(1, 487, 127, "Letter exercise");
         Button button2(2, 487, 196, "Sentence exercise");
         Button button3(3, 487, 266, "Letter exercise(time)");
         Button button4(4, 487, 337, "Sentence exercise(time)");
         Button button5(5, 487, 409, "Developers");
-        Button button6(6, 487, 481, "Exit");
+        Button button6(6, 487, 481, "Instruction");
+        Button button7(7, 487, 552, "Exit");
         sf::Event event;
         eventUpDown(event);
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {
-            if (currentButton == 6) {
+            if (currentButton == 7) {
                 window.close();
+            }
+            if (currentButton == 6) {
+                currentMenuSet(currentButtonGet());
+                return;
             }
             if (currentButton == 5) {
                 currentMenuSet(currentButtonGet());
@@ -140,14 +177,41 @@ public:
         window.draw(button5.nameGet());
         window.draw(button6.recGet(currentButtonGet()));
         window.draw(button6.nameGet());
+        window.draw(button7.recGet(currentButtonGet()));
+        window.draw(button7.nameGet());
+        window.draw(textNMGet());
+        window.display();
+    }
+    void drawInsMenu()
+    {
+        sf::Sprite fon(backgroundFon);
+        fon.setPosition(0, 0);
+        textNMSet(400, 10, "INSTRUCTION");
+        sf::Event event;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+            currentMenuSet(0);
+        }
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+        window.clear();
+        window.draw(fon);
+        window.draw(textNMGet());
         window.display();
     }
     void drawDevMenu()
     {
         sf::Sprite fon(backgroundFon);
         fon.setPosition(0, 0);
+        textNMSet(400, 10, "DEVELOPERS");
+        textIMSet(
+                400,
+                300,
+                "Alexandr Karpik\nRoman "
+                "Pospelovski\nDaniil "
+                "Prikaschikov");
         sf::Event event;
-        eventUpDown(event);
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
             currentMenuSet(0);
         }
@@ -157,14 +221,16 @@ public:
         }
         window.clear();
         window.draw(fon);
+        window.draw(textNMGet());
+        window.draw(textIMGet());
         window.display();
     }
     void drawSETMenu()
     {
         sf::Sprite fon(backgroundFon);
         fon.setPosition(0, 0);
+        textNMSet(400, 10, "SENTENCE EXERCISE");
         sf::Event event;
-        eventUpDown(event);
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
             currentMenuSet(0);
         }
@@ -174,14 +240,15 @@ public:
         }
         window.clear();
         window.draw(fon);
+        window.draw(textNMGet());
         window.display();
     }
     void drawLETMenu()
     {
         sf::Sprite fon(backgroundFon);
         fon.setPosition(0, 0);
+        textNMSet(400, 10, "LETTER EXERCISE");
         sf::Event event;
-        eventUpDown(event);
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
             currentMenuSet(0);
         }
@@ -191,14 +258,15 @@ public:
         }
         window.clear();
         window.draw(fon);
+        window.draw(textNMGet());
         window.display();
     }
     void drawSEMenu()
     {
         sf::Sprite fon(backgroundFon);
         fon.setPosition(0, 0);
+        textNMSet(400, 10, "SENTENCE EXERCISE");
         sf::Event event;
-        eventUpDown(event);
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
             currentMenuSet(0);
         }
@@ -208,14 +276,15 @@ public:
         }
         window.clear();
         window.draw(fon);
+        window.draw(textNMGet());
         window.display();
     }
     void drawLEMenu()
     {
         sf::Sprite fon(backgroundFon);
         fon.setPosition(0, 0);
+        textNMSet(400, 10, "LETTER EXERCISE");
         sf::Event event;
-        eventUpDown(event);
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
             currentMenuSet(0);
         }
@@ -225,6 +294,7 @@ public:
         }
         window.clear();
         window.draw(fon);
+        window.draw(textNMGet());
         window.display();
     }
 };
