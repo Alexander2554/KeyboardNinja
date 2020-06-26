@@ -32,8 +32,13 @@ private:
     void timer(sf::Int32 x)
     {
         sf::Clock clock;
-        while (ftime < x)
+        while (ftime < x) {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+                currentMenuSet(0);
+                return;
+            }
             ftime = clock.getElapsedTime().asMilliseconds();
+        }
         ftime = 0;
     }
     bool loadTexture()
@@ -286,6 +291,10 @@ public:
         int count = 3;
         while (window.isOpen()) {
             sf::Event event;
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+                currentMenuSet(0);
+                return;
+            }
             while (window.pollEvent(event)) {
                 if (event.type == sf::Event::Closed) {
                     window.close();
@@ -309,15 +318,17 @@ public:
     }
     void drawLEMenu()
     {
-        bool answer = true;
+        answer = true;
         sf::Sprite fon(backgroundFon);
         fon.setPosition(0, 0);
         textNMSet(400, 10, "LETTER EXERCISE");
         Exercise exercise;
         while (window.isOpen()) {
-            if (answer)
+            if (answer) {
                 timerCount(fon);
-            exercise.RandomLetter();
+                exercise.RandomLetter();
+                answer = false;
+            }
             char tempc[] = {exercise.letterGet()};
             std::string temp(tempc);
             textIMSet(450, 200, "Press " + temp);
@@ -338,10 +349,12 @@ public:
                         if (exercise.CheckAnswer(
                                     exercise.sentenceGet(),
                                     static_cast<char>(event.text.unicode))) {
+                            answer = true;
                             textIMSet(400, 200, "CORRECT");
-
-                        } else
+                        } else {
+                            answer = false;
                             textIMSet(400, 200, "UNCORRECT");
+                        }
                     }
                     if (event.text.unicode == 27) {
                         currentMenuSet(0);
