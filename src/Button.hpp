@@ -4,5 +4,5 @@
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 #include <iostream>
-sf::Font font;
+extern sf::Font font;
 #endif
