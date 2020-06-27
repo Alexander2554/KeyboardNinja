@@ -269,21 +269,82 @@ public:
     }
     void drawSEMenu()
     {
+        int i = 0;
+        answer = true;
+        sf::Text Input("", font);
+        Input.setFillColor(sf::Color::White);
+        Input.setPosition(250, 400);
+        std::string temp;
         sf::Sprite fon(backgroundFon);
         fon.setPosition(0, 0);
         textNMSet(400, 10, "SENTENCE EXERCISE");
-        sf::Event event;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
             currentMenuSet(0);
         }
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
-                window.close();
+        Exercise exercise;
+        while (window.isOpen()) {
+            if (answer) {
+                exercise.RandomSentence();
+                textIMSet(300, 200, "INPUT " + exercise.sentenceGet());
+                answer = false;
+            }
+            sf::Event event;
+            window.clear();
+            window.draw(fon);
+            window.draw(textNMGet());
+            window.draw(textIMGet());
+            window.draw(Input);
+            window.display();
+            while (!answer) {
+                if (exercise.CheckAnswer(Input.getString(), ' ')) {
+                    answer = true;
+                    textIMSet(400, 200, "CORRECT");
+                    exercise.Clear();
+                    Input.setString("");
+                    temp.clear();
+                    i = 0;
+                    window.clear();
+                    window.draw(fon);
+                    window.draw(textNMGet());
+                    window.draw(textIMGet());
+                    window.draw(Input);
+                    window.display();
+                    timer(1000);
+                } else {
+                    answer = false;
+                }
+                while (window.pollEvent(event)) {
+                    if (event.type == sf::Event::Closed) {
+                        window.close();
+                        return;
+                    }
+                    if (event.type == sf::Event::TextEntered) {
+                        if (event.text.unicode == 8)
+                            if (i > 0) {
+                                i--;
+                                temp.erase(temp.begin() + i);
+                                Input.setString(temp);
+                            }
+                        if (event.text.unicode < 123 && event.text.unicode > 31
+                            && i < 40) {
+                            temp += event.text.unicode;
+                            i++;
+                            Input.setString(temp);
+                        }
+                    }
+                    if (event.text.unicode == 27) {
+                        currentMenuSet(0);
+                        return;
+                    }
+                }
+                window.clear();
+                window.draw(fon);
+                window.draw(textNMGet());
+                window.draw(textIMGet());
+                window.draw(Input);
+                window.display();
+            }
         }
-        window.clear();
-        window.draw(fon);
-        window.draw(textNMGet());
-        window.display();
     }
 
     void timerCount(sf::Sprite fon)
