@@ -39,7 +39,7 @@ public:
     }
     void LoadFromTxt()
     {
-        std::fstream fin("thirdparty/TXT/BDWord.txt", std::ios::in);
+        std::fstream fin("thirdparty/txt/BDWord.txt", std::ios::in);
         std::string text;
         for (int i = 0; i < 1000; i++) {
             fin >> text;
@@ -63,6 +63,7 @@ public:
             posBD.push_back(pos);
             Sentence += BDWord[posBD[i]] + " ";
         }
+        Sentence.erase(Sentence.end() - 1);
     }
     void Clear()
     {
@@ -74,7 +75,7 @@ public:
     {
         if (Letter != ch)
             return false;
-        if (Sentence.compare(str))
+        if (Sentence.compare(str) != 0)
             return false;
         return true;
     }
