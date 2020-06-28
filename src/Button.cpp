@@ -18,7 +18,6 @@ public:
         numberButton = a;
         name.setString(str);
         name.setPosition(x + 10, y + 10);
-        name.setFillColor(sf::Color::White);
     }
     sf::Text nameGet()
     {

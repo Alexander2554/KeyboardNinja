@@ -100,7 +100,6 @@ public:
     {
         textInMenu.setPosition(x, y);
         textInMenu.setString(str);
-        textInMenu.setFillColor(sf::Color::White);
     }
     sf::Text textIMGet()
     {
@@ -110,7 +109,6 @@ public:
     {
         nameMenu.setPosition(x, y);
         nameMenu.setString(str);
-        nameMenu.setFillColor(sf::Color::White);
     }
     sf::Text textNMGet()
     {
@@ -264,7 +262,7 @@ public:
         int i = 0;
         answer = true;
         sf::Text Input("", font);
-        Input.setFillColor(sf::Color::White);
+
         Input.setPosition(250, 400);
         std::string temp;
         sf::Sprite fon(backgroundFon);
@@ -410,7 +408,6 @@ public:
         int i = 0;
         answer = true;
         sf::Text Input("", font);
-        Input.setFillColor(sf::Color::White);
         Input.setPosition(250, 400);
         std::string temp;
         sf::Sprite fon(backgroundFon);
