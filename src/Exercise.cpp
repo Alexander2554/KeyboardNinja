@@ -3,7 +3,7 @@
 class Exercise {
 private:
     char Letter;
-    std::string OutLetter;
+    int countWord;
     std::string Sentence;
     std::vector<std::string> BDWord;
 
@@ -21,13 +21,13 @@ public:
     {
         return Letter;
     }
-    void outLetterSet(std::string str)
+    void countWordSet(int a)
     {
-        OutLetter = str;
+        countWord = a;
     }
-    std::string outLetterGet()
+    int countWordGet()
     {
-        return OutLetter;
+        return countWord;
     }
     void sentenceSet(std::string str)
     {
@@ -56,9 +56,9 @@ public:
     void RandomSentence()
     {
         srand(time(0));
-        int CountWord = (rand() % 4) + 1;
+        countWord = (rand() % 4) + 1;
         std::vector<int> posBD;
-        for (int i = 0; i < CountWord; i++) {
+        for (int i = 0; i < countWord; i++) {
             int pos = rand() % 1000;
             posBD.push_back(pos);
             Sentence += BDWord[posBD[i]] + " ";
@@ -68,7 +68,7 @@ public:
     void Clear()
     {
         Letter = ' ';
-        OutLetter.clear();
+        countWord = 0;
         Sentence.clear();
     }
     bool CheckAnswer(std::string str = "", char ch = ' ')
