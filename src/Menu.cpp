@@ -207,6 +207,19 @@ public:
         sf::Sprite fon(backgroundFon);
         fon.setPosition(0, 0);
         textNMSet(400, 10, "INSTRUCTION");
+        textIMSet(
+                100,
+                100,
+                "In the first menu item, you need to click on the button that "
+                "\n"
+                "the application requires. In the second menu item, you are \n"
+                "required to type the CORRECT set of words. In the third, you "
+                "\n"
+                "need to press the button that is being asked of you in a \n"
+                "while. In the fourth for a while you need to print a set of \n"
+                "words. The fifth is information about the "
+                "developers.\n\n\n\n\n\n\n\n\n\n\nGo "
+                "back to the menu when pressed ESC");
         sf::Event event;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
             currentMenuSet(0);
@@ -218,6 +231,7 @@ public:
         window.clear();
         window.draw(fon);
         window.draw(textNMGet());
+        window.draw(textIMGet());
         window.display();
     }
     void drawDevMenu()
