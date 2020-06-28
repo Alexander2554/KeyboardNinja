@@ -2,7 +2,6 @@
 all: KeyNin
 KeyNin:	Main.o
 	g++ -std=c++11 -Wall -Werror build/src/Main.o -o bin/KeyNin -lsfml-graphics -lsfml-window -lsfml-system
-	./bin/KeyNin
 Main.o:
 	g++ -std=c++11 -Wall -Werror -c src/Main.cpp -o build/src/Main.o
 clean:
@@ -47,7 +46,6 @@ test: $(GTEST_LIB_DIR)/lib/libgtest_main.a $(GTEST_LIB_DIR)/lib/libgtest.a $(TES
 
 $(TESTS) : $(USER_DIR_O)/unittest.o
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -L$(GTEST_LIB_DIR)/lib -lgtest_main -lpthread $^ -o $(USER_DIR_b)/Test -lsfml-graphics -lsfml-window -lsfml-system
-	./bin/Test
 
 $(USER_DIR_O)/unittest.o : test/unittest.cpp \
 			$(GTEST_HEADERS)
