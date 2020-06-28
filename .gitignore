@@ -2,3 +2,6 @@
 *.swp
 *.txt
 KeyNin
+Test
+libgtest.a
+libgtest_main.a
